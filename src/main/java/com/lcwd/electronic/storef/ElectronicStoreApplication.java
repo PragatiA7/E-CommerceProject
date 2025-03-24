@@ -10,7 +10,7 @@ public class ElectronicStoreApplication {
 		SpringApplication.run(ElectronicStoreApplication.class, args);
 
 
-		System.out.println("Hi");
+		System.out.println("E-Commerce Project");
 
 	}
 
