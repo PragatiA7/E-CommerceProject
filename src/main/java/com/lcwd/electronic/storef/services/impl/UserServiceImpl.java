@@ -2,6 +2,7 @@ package com.lcwd.electronic.storef.services.impl;
 
 import com.lcwd.electronic.storef.dtos.UserDto;
 import com.lcwd.electronic.storef.entities.User;
+import com.lcwd.electronic.storef.exceptions.ResourceNotFoundException;
 import com.lcwd.electronic.storef.repositories.UserRepository;
 import com.lcwd.electronic.storef.services.UserService;
 import org.modelmapper.ModelMapper;
@@ -46,7 +47,7 @@ public class UserServiceImpl implements UserService {
     public UserDto updateUser(UserDto userDto, String userId) {
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException
+                .orElseThrow(() -> new ResourceNotFoundException
                         ("User not found with given id !!"));
 
         user.setName(userDto.getName());
@@ -66,7 +67,7 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(String userId) {
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException
+                .orElseThrow(() -> new ResourceNotFoundException
                         ("User not found with given id !!"));
 
         //delete user
@@ -89,7 +90,7 @@ public class UserServiceImpl implements UserService {
     public UserDto getUserById(String userId) {
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("user not found with given id !!"));
+                .orElseThrow(() -> new ResourceNotFoundException("user not found with given id !!"));
 
         return entityToDto(user);
     }

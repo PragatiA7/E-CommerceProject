@@ -1,7 +1,9 @@
 package com.lcwd.electronic.storef.controllers;
 
+import com.lcwd.electronic.storef.dtos.ApiResponseMessage;
 import com.lcwd.electronic.storef.dtos.UserDto;
 import com.lcwd.electronic.storef.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +20,7 @@ public class UserController {
 
     //create
     @PostMapping
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto){
+    public ResponseEntity<UserDto> createUser( @Valid @RequestBody UserDto userDto){
         UserDto userDto1 = userService.createUser(userDto);
         return new ResponseEntity<>(userDto1, HttpStatus.CREATED);
     }
@@ -26,7 +28,7 @@ public class UserController {
     //update
     @PutMapping("/{userId}")
     public ResponseEntity<UserDto> updateUser(@PathVariable("userId") String userId,
-                                              @RequestBody UserDto userDto){
+                                             @Valid @RequestBody UserDto userDto){
         UserDto updatedUserDto = userService.updateUser(userDto,userId);
         return new ResponseEntity<>(updatedUserDto, HttpStatus.OK);
     }
@@ -34,16 +36,17 @@ public class UserController {
     //delete
 
     @DeleteMapping("/{userId}")
-    public ResponseEntity<String> deleteUser(@PathVariable String userId){
+    public ResponseEntity<ApiResponseMessage> deleteUser(@PathVariable String userId){
 
         userService.deleteUser(userId);
-        return  new ResponseEntity<>("User is deleted Successfully !!",HttpStatus.OK);
+        ApiResponseMessage message = ApiResponseMessage.builder().message("User is deleted Successfully !!").success(true).status(HttpStatus.OK).build();
+        return  new ResponseEntity<>(message,HttpStatus.OK);
 
     }
 
 
     //get all
-    @GetMapping
+    @GetMapping()
       public ResponseEntity<List<UserDto>> getAllUsers(@PathVariable String userId){
         return  new ResponseEntity<>(userService.getAllUser(),HttpStatus.OK);
       }
